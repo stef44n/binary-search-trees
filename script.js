@@ -28,6 +28,39 @@ class Node {
         }
         return this;
     }
+
+    find(data) {
+        if (this.data == data) {
+            return this;
+        } else if (data < this.data && this.left != null) {
+            return this.left.find(data);
+        } else if (data > this.data && this.right != null) {
+            return this.right.find(data);
+        }
+        return false;
+    }
+
+    levelOrderNode(callback) {
+        let current = this;
+        const queue = [current];
+        const result = [];
+        while (queue.length > 0) {
+            result.push(current);
+            queue.splice(0, 1);
+            if (current.left) queue.push(current.left);
+            if (current.right) queue.push(current.right);
+            current = queue[0];
+        }
+        if (callback) {
+            return callback(result);
+        }
+        return result;
+    }
+
+    displayLevelOrder(array) {
+        let nodeData = array.map((node) => node.data);
+        return nodeData;
+    }
 }
 
 class Tree {
@@ -106,6 +139,19 @@ class Tree {
             this.root = this.root.delete(data);
         }
     }
+
+    find(data) {
+        if (this.root) {
+            return this.root.find(data);
+        }
+        return false;
+    }
+
+    levelOrder() {
+        if (this.root) {
+            return this.root.levelOrderNode(this.root.displayLevelOrder);
+        }
+    }
 }
 
 arr1 = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -133,3 +179,5 @@ prettyPrint(aTree.root);
 // aTree.delete(8);
 aTree.delete(9);
 prettyPrint(aTree.root);
+console.log(aTree.find(23));
+console.log(aTree.levelOrder());
