@@ -4,12 +4,37 @@ class Node {
         this.left = null;
         this.right = null;
     }
+
+    findMin() {
+        let current = this;
+        while (current.left) current = current.left;
+        return current.data;
+    }
+
+    delete(data) {
+        if (data < this.data && this.left) this.left = this.left.delete(data);
+        else if (data > this.data && this.right)
+            this.right = this.right.delete(data);
+        else {
+            if (this.data == data) {
+                if (this.right && this.left) {
+                    let minVal = this.right.findMin();
+                    this.data = minVal;
+                    this.right = this.right.delete(minVal);
+                } else if (this.left) return this.left;
+                else if (this.right) return this.right;
+                else return null;
+            }
+        }
+        return this;
+    }
 }
 
 class Tree {
-    constructor(array) {
-        this.array = this.buildTree(array);
+    constructor(root) {
+        this.root = this.buildTree(root);
     }
+
     buildTree(anArray) {
         // console.log(anArray);
         let mainNode = new Node(anArray);
@@ -58,6 +83,29 @@ class Tree {
         }
         return mainNode;
     }
+
+    insert(value, rootNode = this.root) {
+        if (rootNode === null) {
+            let node = new Node(value);
+            return node;
+        }
+        if (rootNode.data === value) {
+            return;
+        }
+
+        if (rootNode.data < value) {
+            rootNode.right = this.insert(value, rootNode.right);
+        } else {
+            rootNode.left = this.insert(value, rootNode.left);
+        }
+        return rootNode;
+    }
+
+    delete(data) {
+        if (this.root) {
+            this.root = this.root.delete(data);
+        }
+    }
 }
 
 arr1 = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -79,4 +127,9 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     }
 };
 
-prettyPrint(aTree.array);
+// aTree.insert(8);
+aTree.insert(15);
+prettyPrint(aTree.root);
+// aTree.delete(8);
+aTree.delete(9);
+prettyPrint(aTree.root);
