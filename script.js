@@ -85,6 +85,13 @@ class Node {
             console.log(currentNode.data);
         }
     }
+
+    findHeight(currentNode) {
+        if (currentNode == null) return -1;
+        let leftHeight = this.findHeight(currentNode.left);
+        let rightHeight = this.findHeight(currentNode.right);
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
 }
 
 class Tree {
@@ -194,6 +201,28 @@ class Tree {
             this.root.postorder(this.root);
         }
     }
+
+    findHeight() {
+        if (this.root) {
+            return this.root.findHeight(this.root);
+        }
+        return -1;
+    }
+
+    depth(nodeValue, node = this.root, edgeCount = 0) {
+        if (node === null) {
+            return;
+        }
+        if (node.data === nodeValue) {
+            return edgeCount;
+        }
+
+        if (node.data < nodeValue) {
+            return this.depth(nodeValue, node.right, edgeCount + 1);
+        } else {
+            return this.depth(nodeValue, node.left, edgeCount + 1);
+        }
+    }
 }
 
 arr1 = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -219,10 +248,12 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 aTree.insert(15);
 prettyPrint(aTree.root);
 // aTree.delete(8);
-aTree.delete(9);
+// aTree.delete(9);
 prettyPrint(aTree.root);
 console.log(aTree.find(23));
 console.log(aTree.levelOrder());
 // console.log(aTree.inorder());
 // console.log(aTree.preorder());
-console.log(aTree.postorder());
+// console.log(aTree.postorder());
+// console.log(aTree.findHeight());
+console.log(aTree.depth(324));
