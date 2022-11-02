@@ -87,7 +87,9 @@ class Node {
     }
 
     findHeight(currentNode) {
-        if (currentNode == null) return -1;
+        if (currentNode == null) {
+            return -1;
+        }
         let leftHeight = this.findHeight(currentNode.left);
         let rightHeight = this.findHeight(currentNode.right);
         return Math.max(leftHeight, rightHeight) + 1;
@@ -223,6 +225,26 @@ class Tree {
             return this.depth(nodeValue, node.left, edgeCount + 1);
         }
     }
+
+    isBalanced() {
+        return this.#testBalance(this.root) !== -1;
+    }
+
+    #testBalance(node) {
+        if (node === null) {
+            return 0;
+        }
+
+        const leftBalance = this.#testBalance(node.left);
+        const rightBalance = this.#testBalance(node.right);
+        const diff = Math.abs(leftBalance - rightBalance);
+
+        if (leftBalance === -1 || rightBalance === -1 || diff > 1) {
+            return -1;
+        } else {
+            return Math.max(leftBalance, rightBalance) + 1;
+        }
+    }
 }
 
 arr1 = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -244,7 +266,11 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     }
 };
 
-// aTree.insert(8);
+// aTree.insert(88);
+// aTree.insert(100);
+// aTree.insert(1010);
+aTree.insert(26);
+// aTree.insert(2);
 aTree.insert(15);
 prettyPrint(aTree.root);
 // aTree.delete(8);
@@ -256,4 +282,6 @@ console.log(aTree.levelOrder());
 // console.log(aTree.preorder());
 // console.log(aTree.postorder());
 // console.log(aTree.findHeight());
-console.log(aTree.depth(324));
+// console.log(aTree.depth(5));
+// console.log(aTree.depth(88));
+console.log(aTree.isBalanced());
