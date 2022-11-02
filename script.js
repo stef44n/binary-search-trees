@@ -61,6 +61,30 @@ class Node {
         let nodeData = array.map((node) => node.data);
         return nodeData;
     }
+
+    inorder(currentNode) {
+        if (currentNode) {
+            this.inorder(currentNode.left);
+            console.log(currentNode.data);
+            this.inorder(currentNode.right);
+        }
+    }
+
+    preorder(currentNode) {
+        if (currentNode) {
+            console.log(currentNode.data);
+            this.preorder(currentNode.left);
+            this.preorder(currentNode.right);
+        }
+    }
+
+    postorder(currentNode) {
+        if (currentNode) {
+            this.postorder(currentNode.left);
+            this.postorder(currentNode.right);
+            console.log(currentNode.data);
+        }
+    }
 }
 
 class Tree {
@@ -152,6 +176,24 @@ class Tree {
             return this.root.levelOrderNode(this.root.displayLevelOrder);
         }
     }
+
+    inorder() {
+        if (this.root) {
+            this.root.inorder(this.root);
+        }
+    }
+
+    preorder() {
+        if (this.root) {
+            this.root.preorder(this.root);
+        }
+    }
+
+    postorder() {
+        if (this.root) {
+            this.root.postorder(this.root);
+        }
+    }
 }
 
 arr1 = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -181,3 +223,6 @@ aTree.delete(9);
 prettyPrint(aTree.root);
 console.log(aTree.find(23));
 console.log(aTree.levelOrder());
+// console.log(aTree.inorder());
+// console.log(aTree.preorder());
+console.log(aTree.postorder());
