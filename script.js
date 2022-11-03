@@ -62,14 +62,6 @@ class Node {
         return nodeData;
     }
 
-    inorder(currentNode) {
-        if (currentNode) {
-            this.inorder(currentNode.left);
-            console.log(currentNode.data);
-            this.inorder(currentNode.right);
-        }
-    }
-
     preorder(currentNode) {
         if (currentNode) {
             console.log(currentNode.data);
@@ -121,7 +113,7 @@ class Tree {
                 // console.log(`mid index: floor.(${ordered.length}/2) = ${midIndex}`);
 
                 let midValue = ordered[midIndex];
-                console.log(`mid Value = ${midValue}`);
+                // console.log(`mid Value = ${midValue}`);
 
                 let leftArr = ordered.slice(0, midIndex);
                 // console.log(leftArr);
@@ -186,10 +178,20 @@ class Tree {
         }
     }
 
-    inorder() {
-        if (this.root) {
-            this.root.inorder(this.root);
+    inorder(callbackFn, node = this.root, inorderList = []) {
+        if (node === null) {
+            return;
         }
+
+        this.inorder(callbackFn, node.left, inorderList);
+        if (callbackFn) {
+            callbackFn(node);
+        } else {
+            inorderList.push(node.data);
+        }
+        this.inorder(callbackFn, node.right, inorderList);
+
+        if (inorderList.length > 0) return inorderList;
     }
 
     preorder() {
@@ -245,6 +247,29 @@ class Tree {
             return Math.max(leftBalance, rightBalance) + 1;
         }
     }
+
+    rebalance() {
+        const inorderList = this.inorder();
+        return (this.root = this.buildTree(inorderList));
+    }
+
+    prettyPrint(node = this.root, prefix = "", isLeft = true) {
+        if (node.right !== null) {
+            this.prettyPrint(
+                node.right,
+                `${prefix}${isLeft ? "│   " : "    "}`,
+                false
+            );
+        }
+        console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+        if (node.left !== null) {
+            this.prettyPrint(
+                node.left,
+                `${prefix}${isLeft ? "    " : "│   "}`,
+                true
+            );
+        }
+    }
 }
 
 arr1 = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -252,36 +277,36 @@ arr1 = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 // console.log(buildTree(arr1));
 
 let aTree = new Tree(arr1);
-console.log(aTree);
+console.log(aTree.root);
 
 // let aNode = new Node(arr1);
 
-const prettyPrint = (node, prefix = "", isLeft = true) => {
-    if (node.right !== null) {
-        prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
-    }
-    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
-    if (node.left !== null) {
-        prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
-    }
-};
+aTree.prettyPrint();
+console.log(aTree.isBalanced());
 
-// aTree.insert(88);
-// aTree.insert(100);
-// aTree.insert(1010);
+aTree.insert(88);
+aTree.insert(100);
+aTree.insert(1010);
 aTree.insert(26);
-// aTree.insert(2);
 aTree.insert(15);
-prettyPrint(aTree.root);
+aTree.prettyPrint();
+console.log(aTree.isBalanced());
+
 // aTree.delete(8);
 // aTree.delete(9);
-prettyPrint(aTree.root);
-console.log(aTree.find(23));
-console.log(aTree.levelOrder());
-// console.log(aTree.inorder());
+// console.log(aTree.find(23)); // logs the node
+// console.log(aTree.levelOrder()); // logs array of values (breadth first search)
+// console.log(aTree.inorder()); // array of values in the BST in order
 // console.log(aTree.preorder());
 // console.log(aTree.postorder());
-// console.log(aTree.findHeight());
-// console.log(aTree.depth(5));
-// console.log(aTree.depth(88));
+// console.log(aTree.findHeight()); // returns height of the BST
+// console.log(aTree.depth(5)); // returns depth of 5 in the BST
+console.log(aTree.rebalance());
+aTree.prettyPrint();
+console.log(aTree.isBalanced());
+aTree.insert(2);
+aTree.prettyPrint();
+console.log(aTree.isBalanced());
+console.log(aTree.rebalance());
+aTree.prettyPrint();
 console.log(aTree.isBalanced());
