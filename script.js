@@ -62,22 +62,6 @@ class Node {
         return nodeData;
     }
 
-    preorder(currentNode) {
-        if (currentNode) {
-            console.log(currentNode.data);
-            this.preorder(currentNode.left);
-            this.preorder(currentNode.right);
-        }
-    }
-
-    postorder(currentNode) {
-        if (currentNode) {
-            this.postorder(currentNode.left);
-            this.postorder(currentNode.right);
-            console.log(currentNode.data);
-        }
-    }
-
     findHeight(currentNode) {
         if (currentNode == null) {
             return -1;
@@ -191,18 +175,44 @@ class Tree {
         }
         this.inorder(callbackFn, node.right, inorderList);
 
-        if (inorderList.length > 0) return inorderList;
-    }
-
-    preorder() {
-        if (this.root) {
-            this.root.preorder(this.root);
+        if (inorderList.length > 0) {
+            return inorderList;
         }
     }
 
-    postorder() {
-        if (this.root) {
-            this.root.postorder(this.root);
+    preorder(callbackFn, node = this.root, preorderList = []) {
+        if (node === null) {
+            return;
+        }
+
+        if (callbackFn) {
+            callbackFn(node);
+        } else {
+            preorderList.push(node.data);
+        }
+        this.preorder(callbackFn, node.left, preorderList);
+        this.preorder(callbackFn, node.right, preorderList);
+
+        if (preorderList.length > 0) {
+            return preorderList;
+        }
+    }
+
+    postorder(callbackFn, node = this.root, postorderList = []) {
+        if (node === null) {
+            return;
+        }
+
+        this.postorder(callbackFn, node.left, postorderList);
+        this.postorder(callbackFn, node.right, postorderList);
+        if (callbackFn) {
+            callbackFn(node);
+        } else {
+            postorderList.push(node.data);
+        }
+
+        if (postorderList.length > 0) {
+            return postorderList;
         }
     }
 
@@ -277,20 +287,20 @@ arr1 = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 // console.log(buildTree(arr1));
 
 let aTree = new Tree(arr1);
-console.log(aTree.root);
+// console.log(aTree.root);
 
 // let aNode = new Node(arr1);
 
-aTree.prettyPrint();
-console.log(aTree.isBalanced());
+// aTree.prettyPrint();
+// console.log(aTree.isBalanced());
 
-aTree.insert(88);
-aTree.insert(100);
-aTree.insert(1010);
-aTree.insert(26);
-aTree.insert(15);
-aTree.prettyPrint();
-console.log(aTree.isBalanced());
+// aTree.insert(88);
+// aTree.insert(100);
+// aTree.insert(1010);
+// aTree.insert(26);
+// aTree.insert(15);
+// aTree.prettyPrint();
+// console.log(aTree.isBalanced());
 
 // aTree.delete(8);
 // aTree.delete(9);
@@ -301,12 +311,69 @@ console.log(aTree.isBalanced());
 // console.log(aTree.postorder());
 // console.log(aTree.findHeight()); // returns height of the BST
 // console.log(aTree.depth(5)); // returns depth of 5 in the BST
-console.log(aTree.rebalance());
-aTree.prettyPrint();
-console.log(aTree.isBalanced());
-aTree.insert(2);
-aTree.prettyPrint();
-console.log(aTree.isBalanced());
-console.log(aTree.rebalance());
-aTree.prettyPrint();
-console.log(aTree.isBalanced());
+
+// console.log(aTree.rebalance());
+// aTree.prettyPrint();
+// console.log(aTree.isBalanced());
+// aTree.insert(2);
+// aTree.prettyPrint();
+// console.log(aTree.isBalanced());
+// console.log(aTree.rebalance());
+// aTree.prettyPrint();
+// console.log(aTree.isBalanced());
+
+function driverFunc() {
+    let numOfValues = Math.floor(Math.random() * 15) + 15;
+    let array = [];
+    for (let i = 0; i < numOfValues; i++) {
+        let randomVal = Math.floor(Math.random() * 100);
+        array.push(randomVal);
+    }
+
+    let randomTree = new Tree(array);
+    console.log("***** RANDOM TREE CREATED *****");
+    randomTree.prettyPrint();
+    console.log(
+        `%c is BST balanced? - ${randomTree.isBalanced()}`,
+        "background: yellow"
+    );
+    console.log("Level order");
+    console.log(randomTree.levelOrder());
+    console.log("Pre order");
+    console.log(randomTree.preorder());
+    console.log("In order");
+    console.log(randomTree.inorder());
+    console.log("Post order");
+    console.log(randomTree.postorder());
+
+    console.log("***** UNBALANCING THE TREE *****");
+    randomTree.insert(101);
+    randomTree.insert(109);
+    randomTree.insert(154);
+    randomTree.insert(123);
+    randomTree.prettyPrint();
+    console.log(
+        `%c is BST balanced? - ${randomTree.isBalanced()}`,
+        "background: yellow"
+    );
+
+    console.log("***** REBALANCING THE TREE *****");
+    randomTree.rebalance();
+    randomTree.prettyPrint();
+    console.log(
+        `%c is BST balanced? - ${randomTree.isBalanced()}`,
+        "background: yellow"
+    );
+
+    console.log("Level order");
+    console.log(randomTree.levelOrder());
+    console.log("Pre order");
+    console.log(randomTree.preorder());
+    console.log("In order");
+    console.log(randomTree.inorder());
+    console.log("Post order");
+    console.log(randomTree.postorder());
+    return;
+}
+
+console.log(driverFunc());
