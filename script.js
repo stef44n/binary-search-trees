@@ -292,35 +292,6 @@ let aTree = new Tree(arr1);
 // let aNode = new Node(arr1);
 
 // aTree.prettyPrint();
-// console.log(aTree.isBalanced());
-
-// aTree.insert(88);
-// aTree.insert(100);
-// aTree.insert(1010);
-// aTree.insert(26);
-// aTree.insert(15);
-// aTree.prettyPrint();
-// console.log(aTree.isBalanced());
-
-// aTree.delete(8);
-// aTree.delete(9);
-// console.log(aTree.find(23)); // logs the node
-// console.log(aTree.levelOrder()); // logs array of values (breadth first search)
-// console.log(aTree.inorder()); // array of values in the BST in order
-// console.log(aTree.preorder());
-// console.log(aTree.postorder());
-// console.log(aTree.findHeight()); // returns height of the BST
-// console.log(aTree.depth(5)); // returns depth of 5 in the BST
-
-// console.log(aTree.rebalance());
-// aTree.prettyPrint();
-// console.log(aTree.isBalanced());
-// aTree.insert(2);
-// aTree.prettyPrint();
-// console.log(aTree.isBalanced());
-// console.log(aTree.rebalance());
-// aTree.prettyPrint();
-// console.log(aTree.isBalanced());
 
 function driverFunc() {
     let numOfValues = Math.floor(Math.random() * 15) + 15;
@@ -373,7 +344,7 @@ function driverFunc() {
     console.log(randomTree.inorder());
     console.log("Post order");
     console.log(randomTree.postorder());
-    return;
+    return randomTree.findHeight();
 }
 
 console.log(driverFunc());
